@@ -1,9 +1,10 @@
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  margin: 20px;
+  margin: 0;
   color: #333;
   background-color: #f8f9fa;
+  display: flex;
 }
 
 h1, h2, h3 {
@@ -34,10 +35,12 @@ button {
   background-color: #0066cc;
   color: white;
   border: none;
-  padding: 8px 15px;
+  padding: 0 15px;
   cursor: pointer;
   border-radius: 4px;
   margin-right: 5px;
+  height: 32px;
+  line-height: 32px;
 }
 
 button:hover {
@@ -45,6 +48,7 @@ button:hover {
 }
 
 .container {
+  flex: 1;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
@@ -95,9 +99,20 @@ button:hover {
 
 .form-control {
   width: 100%;
-  padding: 8px;
+  height: 32px;
+  padding: 0 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
+}
+
+select.form-control {
+  padding: 0 4px;
+}
+
+textarea.form-control {
+  height: auto;
+  padding: 8px;
 }
 
 .modal {
@@ -177,10 +192,17 @@ button:hover {
   color: orange;
 }
 
-.nav {
+/* New sidebar navigation styles */
+.sidebar {
+  width: 200px;
   background-color: #0066cc;
-  padding: 10px 20px;
-  color: white;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+.nav {
+  height: 100%;
 }
 
 .nav ul {
@@ -188,19 +210,24 @@ button:hover {
   margin: 0;
   padding: 0;
   display: flex;
+  flex-direction: column;
 }
 
 .nav li {
-  margin-right: 20px;
+  margin: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav a {
   color: white;
   text-decoration: none;
+  padding: 15px 20px;
+  display: block;
 }
 
-.nav a:hover {
-  text-decoration: underline;
+.nav a:hover, .nav a.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
 }
 
 .sortable-list {
@@ -221,14 +248,17 @@ button:hover {
   margin-bottom: 20px;
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 .search-box {
-  padding: 8px;
+  height: 32px;
+  padding: 0 8px;
   width: 100%;
   max-width: 300px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .pagination {
@@ -265,4 +295,27 @@ button:hover {
 .badge-warning {
   background-color: #ffc107;
   color: #212529;
+}
+
+/* Responsive adjustments for sidebar */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .nav ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .nav li {
+    border-bottom: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
 } 
