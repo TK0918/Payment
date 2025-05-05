@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>支付系统改造 PRD 文档</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <div class="nav">
+    <ul>
+      <li><a href="./index.html">客户列表</a></li>
+      <li><a href="./transfer-review.html">转账审核</a></li>
+      <li><a href="./report-export.html">报表导出</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h1>报表导出</h1>
+    </div>
+
+    <div class="card">
+      <form id="reportExportForm">
+        <div class="form-group">
+          <label for="reportType">报表类型</label>
+          <select id="reportType" class="form-control" onchange="updateReportFields()">
+            <option value="recharge">充值报表</option>
+            <option value="consumption">消费报表</option>
+            <option value="review">审核报表</option>
+            <option value="balance">余额报表</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="timeRange">时间范围</label>
+          <select id="timeRange" class="form-control" onchange="toggleCustomDateRange()">
+            <option value="today">今天</option>
+            <option value="yesterday">昨天</option>
+            <option value="thisWeek">本周</option>
+            <option value="lastWeek">上周</option>
+            <option value="thisMonth" selected>本月</option>
+            <option value="lastMonth">上月</option>
+            <option value="thisQuarter">本季度</option>
+            <option value="lastQuarter">上季度</option>
+            <option value="thisYear">今年</option>
+            <option value="lastYear">去年</option>
+            <option value="custom">自定义</option>
+          </select>
+        </div>
+        
+        <div id="customDateRange" style="display: none;">
+          <div class="form-group">
+            <label for="startDate">开始日期</label>
+            <input type="date" id="startDate" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="endDate">结束日期</label>
+            <input type="date" id="endDate" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="clientFilter">客户筛选</label>
+          <select id="clientFilter" class="form-control" onchange="toggleClientSelection()">
+            <option value="all" selected>所有客户</option>
+            <option value="active">正常状态客户</option>
+            <option value="frozen">冻结状态客户</option>
+            <option value="specific">指定客户</option>
+          </select>
+        </div>
+        
+        <div id="specificClientSelection" style="display: none;">
+          <div class="form-group">
+            <label for="clientSearch">搜索客户</label>
+            <input type="text" id="clientSearch" placeholder="输入客户名称或ID" class="form-control">
+            <button type="button" onclick="searchClient()">搜索</button>
+          </div>
+          
+          <div id="clientSearchResults" style="margin-top: 10px; max-height: 200px; overflow-y: auto;">
+            <div><input type="checkbox" id="client1" value="C001"> <label for="client1">ABC科技有限公司 (C001)</label></div>
+            <div><input type="checkbox" id="client2" value="C002"> <label for="client2">XYZ贸易公司 (C002)</label></div>
+            <div><input type="checkbox" id="client3" value="C003"> <label for="client3">未来信息技术 (C003)</label></div>
+            <div><input type="checkbox" id="client4" value="C004"> <label for="client4">全球电子商务 (C004)</label></div>
+            <div><input type="checkbox" id="client5" value="C005"> <label for="client5">智慧软件开发 (C005)</label></div>
+            <div><input type="checkbox" id="client6" value="C006"> <label for="client6">卓越教育机构 (C006)</label></div>
+            <div><input type="checkbox" id="client7" value="C007"> <label for="client7">快速物流服务 (C007)</label></div>
+            <div><input type="checkbox" id="client8" value="C008"> <label for="client8">创新营销策划 (C008)</label></div>
+          </div>
+        </div>
+        
+        <div id="rechargeFields">
+          <div class="form-group">
+            <label for="paymentMethod">支付方式</label>
+            <select id="paymentMethod" class="form-control">
+              <option value="all" selected>全部</option>
+              <option value="wallet">钱包余额</option>
+              <option value="bank">银行转账</option>
+              <option value="paypal">PayPal</option>
+              <option value="alipay">支付宝</option>
+              <option value="wechat">微信支付</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="amountRange">金额范围</label>
+            <select id="amountRange" class="form-control" onchange="toggleCustomAmountRange()">
+              <option value="all" selected>全部</option>
+              <option value="0-1000">0-1,000元</option>
+              <option value="1000-5000">1,000-5,000元</option>
+              <option value="5000-10000">5,000-10,000元</option>
+              <option value="10000-50000">10,000-50,000元</option>
+              <option value="50000+">50,000元以上</option>
+              <option value="custom">自定义</option>
+            </select>
+          </div>
+          
+          <div id="customAmountRange" style="display: none;">
+            <div class="form-group">
+              <label for="minAmount">最小金额</label>
+              <input type="number" id="minAmount" class="form-control" min="0" step="0.01">
+            </div>
+            
+            <div class="form-group">
+              <label for="maxAmount">最大金额</label>
+              <input type="number" id="maxAmount" class="form-control" min="0" step="0.01">
+            </div>
+          </div>
+        </div>
+        
+        <div id="reviewFields" style="display: none;">
+          <div class="form-group">
+            <label for="reviewStatus">审核状态</label>
+            <select id="reviewStatus" class="form-control">
+              <option value="all" selected>全部</option>
+              <option value="pending">待审核</option>
+              <option value="approved">已通过</option>
+              <option value="rejected">已驳回</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="reviewer">审核人</label>
+            <select id="reviewer" class="form-control">
+              <option value="all" selected>全部</option>
+              <option value="admin001">管理员001</option>
+              <option value="admin002">管理员002</option>
+              <option value="admin003">管理员003</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="exportFormat">导出格式</label>
+          <select id="exportFormat" class="form-control">
+            <option value="excel" selected>Excel</option>
+            <option value="csv">CSV</option>
+            <option value="pdf">PDF</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="includeDetails" checked>
+            包含明细数据
+          </label>
+        </div>
+        
+        <div style="margin-top: 30px; text-align: center;">
+          <button type="button" onclick="previewReport()">预览报表</button>
+          <button type="button" onclick="exportReport()">导出报表</button>
+          <button type="reset">重置</button>
+        </div>
+      </form>
+    </div>
+    
+    <div class="card" id="reportPreview" style="display: none;">
+      <h2>报表预览</h2>
+      
+      <div id="previewInfo" style="margin-bottom: 20px;">
+        <h3>充值报表 - 2023年6月</h3>
+        <p>筛选条件：所有客户，全部支付方式，全部金额范围</p>
+      </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>客户ID</th>
+            <th>客户名称</th>
+            <th>充值笔数</th>
+            <th>充值总金额</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>C001</td>
+            <td>ABC科技有限公司</td>
+            <td>5</td>
+            <td>¥45,000.00</td>
+          </tr>
+          <tr>
+            <td>C002</td>
+            <td>XYZ贸易公司</td>
+            <td>3</td>
+            <td>¥18,000.00</td>
+          </tr>
+          <tr>
+            <td>C003</td>
+            <td>未来信息技术</td>
+            <td>2</td>
+            <td>¥30,000.00</td>
+          </tr>
+          <tr>
+            <td>C004</td>
+            <td>全球电子商务</td>
+            <td>4</td>
+            <td>¥55,000.00</td>
+          </tr>
+          <tr>
+            <td>C006</td>
+            <td>卓越教育机构</td>
+            <td>2</td>
+            <td>¥25,000.00</td>
+          </tr>
+          <tr>
+            <td>C007</td>
+            <td>快速物流服务</td>
+            <td>1</td>
+            <td>¥12,000.00</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="text-align: right;"><strong>总计</strong></td>
+            <td><strong>17</strong></td>
+            <td><strong>¥185,000.00</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div style="margin-top: 20px; text-align: center;">
+        <button onclick="exportReport()">导出此报表</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+  <script>
+    function toggleCustomDateRange() {
+      const timeRange = document.getElementById('timeRange').value;
+      document.getElementById('customDateRange').style.display = 
+        timeRange === 'custom' ? 'block' : 'none';
+    }
+    
+    function toggleClientSelection() {
+      const clientFilter = document.getElementById('clientFilter').value;
+      document.getElementById('specificClientSelection').style.display = 
+        clientFilter === 'specific' ? 'block' : 'none';
+    }
+    
+    function toggleCustomAmountRange() {
+      const amountRange = document.getElementById('amountRange').value;
+      document.getElementById('customAmountRange').style.display = 
+        amountRange === 'custom' ? 'block' : 'none';
+    }
+    
+    function updateReportFields() {
+      const reportType = document.getElementById('reportType').value;
+      
+      // Hide all specific fields first
+      document.getElementById('rechargeFields').style.display = 'none';
+      document.getElementById('reviewFields').style.display = 'none';
+      
+      // Show fields based on report type
+      if (reportType === 'recharge' || reportType === 'consumption') {
+        document.getElementById('rechargeFields').style.display = 'block';
+      } else if (reportType === 'review') {
+        document.getElementById('reviewFields').style.display = 'block';
+      }
+    }
+    
+    function searchClient() {
+      const searchTerm = document.getElementById('clientSearch').value.toLowerCase();
+      alert('搜索客户: ' + searchTerm);
+      // In a real application, this would search and filter the client list
+    }
+    
+    function previewReport() {
+      if (!validateForm()) return;
+      
+      document.getElementById('reportPreview').style.display = 'block';
+      // In a real application, this would fetch and display the report data
+      
+      // Scroll to preview
+      document.getElementById('reportPreview').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function exportReport() {
+      if (!validateForm()) return;
+      
+      const reportType = document.getElementById('reportType').value;
+      const exportFormat = document.getElementById('exportFormat').value;
+      
+      let reportName;
+      switch(reportType) {
+        case 'recharge': reportName = '充值报表'; break;
+        case 'consumption': reportName = '消费报表'; break;
+        case 'review': reportName = '审核报表'; break;
+        case 'balance': reportName = '余额报表'; break;
+      }
+      
+      alert(`正在导出${reportName}，格式：${exportFormat}`);
+      // In a real application, this would generate and download the report
+    }
+    
+    function validateForm() {
+      const timeRange = document.getElementById('timeRange').value;
+      
+      if (timeRange === 'custom') {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        
+        if (!startDate || !endDate) {
+          alert('请选择开始和结束日期');
+          return false;
+        }
+        
+        if (new Date(startDate) > new Date(endDate)) {
+          alert('开始日期必须早于结束日期');
+          return false;
+        }
+      }
+      
+      const amountRange = document.getElementById('amountRange').value;
+      
+      if (amountRange === 'custom') {
+        const minAmount = document.getElementById('minAmount').value;
+        const maxAmount = document.getElementById('maxAmount').value;
+        
+        if (minAmount && maxAmount && parseFloat(minAmount) > parseFloat(maxAmount)) {
+          alert('最小金额不能大于最大金额');
+          return false;
+        }
+      }
+      
+      return true;
+    }
+    
+    // Initialize form fields visibility
+    document.addEventListener('DOMContentLoaded', function() {
+      updateReportFields();
+    });
+  </script>
+</body>
+</html> 

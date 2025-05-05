@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>支付系统改造 PRD 文档</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <div class="nav">
+    <ul>
+      <li><a href="./index.html">我的钱包</a></li>
+      <li><a href="./payment-methods.html">支付方式设置</a></li>
+      <li><a href="./create-order.html">创建支付订单</a></li>
+      <li><a href="./payment-details.html">支付结果与明细</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h1>创建支付订单</h1>
+    </div>
+
+    <div class="card">
+      <h2>订单信息</h2>
+      <div class="form-group">
+        <label for="orderNumber">订单编号</label>
+        <input type="text" id="orderNumber" class="form-control" value="ORDER-20230610-001" readonly>
+      </div>
+      
+      <div class="form-group">
+        <label for="orderDate">下单时间</label>
+        <input type="text" id="orderDate" class="form-control" value="2023-06-10 15:30:45" readonly>
+      </div>
+      
+      <h3>商品明细</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>商品名称</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>小计</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>高级会员套餐</td>
+            <td>¥1,200.00</td>
+            <td>1</td>
+            <td>¥1,200.00</td>
+          </tr>
+          <tr>
+            <td>数据分析服务</td>
+            <td>¥800.00</td>
+            <td>2</td>
+            <td>¥1,600.00</td>
+          </tr>
+          <tr>
+            <td>API调用包（1000次）</td>
+            <td>¥500.00</td>
+            <td>1</td>
+            <td>¥500.00</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" style="text-align: right;"><strong>总计</strong></td>
+            <td><strong>¥3,300.00</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    
+    <div class="card">
+      <h2>选择支付方式</h2>
+      <p>按照您设置的优先级顺序显示可用支付方式</p>
+      
+      <div style="margin: 20px 0;">
+        <div class="form-group">
+          <input type="radio" id="paymentWallet" name="paymentMethod" value="wallet" checked>
+          <label for="paymentWallet" style="display: inline;">钱包余额 (可用余额: ¥10,000.00)</label>
+        </div>
+        
+        <div class="form-group">
+          <input type="radio" id="paymentPaypal" name="paymentMethod" value="paypal">
+          <label for="paymentPaypal" style="display: inline;">PayPal (user@example.com)</label>
+        </div>
+        
+        <div class="form-group">
+          <input type="radio" id="paymentAlipay" name="paymentMethod" value="alipay">
+          <label for="paymentAlipay" style="display: inline;">支付宝 (138****6789)</label>
+        </div>
+        
+        <div class="form-group">
+          <input type="radio" id="paymentWechat" name="paymentMethod" value="wechat">
+          <label for="paymentWechat" style="display: inline;">微信支付 (微信用户)</label>
+        </div>
+      </div>
+      
+      <div style="margin-top: 30px; text-align: center;">
+        <h3>需支付: <span style="color: #e74c3c; font-size: 24px;">¥3,300.00</span></h3>
+        <button style="padding: 12px 30px; font-size: 18px;" onclick="confirmPayment()">确认支付</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Processing Modal -->
+  <div id="processingModal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+      <h2>正在处理支付...</h2>
+      <p>请不要关闭或刷新页面</p>
+      <div style="margin: 30px 0;">
+        <img src="https://i.imgur.com/JVbQwxv.gif" alt="Loading" style="width: 50px;">
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+  <script>
+    function confirmPayment() {
+      // Show processing modal
+      openModal('processingModal');
+      
+      // Simulate payment processing
+      setTimeout(function() {
+        closeModal('processingModal');
+        
+        // Redirect to payment result page
+        window.location.href = './payment-details.html?order=ORDER-20230610-001&status=success';
+      }, 2000);
+    }
+  </script>
+</body>
+</html> 

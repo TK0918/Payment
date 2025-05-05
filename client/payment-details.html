@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>支付系统改造 PRD 文档</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <div class="nav">
+    <ul>
+      <li><a href="./index.html">我的钱包</a></li>
+      <li><a href="./payment-methods.html">支付方式设置</a></li>
+      <li><a href="./create-order.html">创建支付订单</a></li>
+      <li><a href="./payment-details.html">支付结果与明细</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h1>支付结果与明细</h1>
+      <div>
+        <button onclick="window.location.href='./index.html'">返回钱包</button>
+      </div>
+    </div>
+
+    <!-- Payment Result Section -->
+    <div class="card" id="paymentResultSection">
+      <div style="text-align: center; padding: 20px 0;">
+        <img src="https://i.imgur.com/T5ccMJP.png" alt="Success" style="width: 80px;">
+        <h2 style="color: #27ae60;">支付成功</h2>
+        <p>订单已完成支付，感谢您的购买！</p>
+      </div>
+      
+      <div style="margin: 30px 0; padding: 20px; background-color: #f8f9fa; border-radius: 5px;">
+        <div class="detail-row">
+          <div class="detail-label">订单编号</div>
+          <div class="detail-value">ORDER-20230610-001</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">支付时间</div>
+          <div class="detail-value">2023-06-10 15:32:18</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">支付方式</div>
+          <div class="detail-value">钱包余额</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">支付金额</div>
+          <div class="detail-value">¥3,300.00</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">交易流水号</div>
+          <div class="detail-value">TX20230610153218</div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 20px;">
+        <button onclick="window.location.href='./create-order.html'">继续购买</button>
+        <button onclick="window.print()">打印凭证</button>
+      </div>
+    </div>
+    
+    <!-- Payment Failed Version (Hidden by default) -->
+    <div class="card" id="paymentFailedSection" style="display: none;">
+      <div style="text-align: center; padding: 20px 0;">
+        <img src="https://i.imgur.com/GnyDvKN.png" alt="Failed" style="width: 80px;">
+        <h2 style="color: #e74c3c;">支付失败</h2>
+        <p>很抱歉，您的支付未能完成</p>
+      </div>
+      
+      <div style="margin: 30px 0; padding: 20px; background-color: #f8f9fa; border-radius: 5px;">
+        <div class="detail-row">
+          <div class="detail-label">订单编号</div>
+          <div class="detail-value">ORDER-20230610-002</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">尝试支付时间</div>
+          <div class="detail-value">2023-06-10 16:05:42</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">支付方式</div>
+          <div class="detail-value">PayPal</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">支付金额</div>
+          <div class="detail-value">¥5,500.00</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">失败原因</div>
+          <div class="detail-value" style="color: #e74c3c;">PayPal账户余额不足</div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 20px;">
+        <button onclick="window.location.href='./create-order.html'">重新支付</button>
+        <button onclick="window.location.href='./payment-methods.html'">检查支付方式</button>
+      </div>
+    </div>
+    
+    <!-- Payment Processing Version (Hidden by default) -->
+    <div class="card" id="paymentProcessingSection" style="display: none;">
+      <div style="text-align: center; padding: 20px 0;">
+        <img src="https://i.imgur.com/JVbQwxv.gif" alt="Processing" style="width: 80px;">
+        <h2 style="color: #f39c12;">支付处理中</h2>
+        <p>您的支付正在处理中，请稍后查看结果</p>
+      </div>
+      
+      <div style="margin: 30px 0; padding: 20px; background-color: #f8f9fa; border-radius: 5px;">
+        <div class="detail-row">
+          <div class="detail-label">订单编号</div>
+          <div class="detail-value">ORDER-20230610-003</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">尝试支付时间</div>
+          <div class="detail-value">2023-06-10 16:45:12</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">支付方式</div>
+          <div class="detail-value">银行转账</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">支付金额</div>
+          <div class="detail-value">¥8,200.00</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">预计完成时间</div>
+          <div class="detail-value">1-2工作日</div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 20px;">
+        <button onclick="window.location.href='./index.html'">返回钱包</button>
+        <button onclick="window.location.reload()">刷新状态</button>
+      </div>
+    </div>
+
+    <!-- Payment History Section -->
+    <div class="card">
+      <h2>历史支付记录</h2>
+      
+      <div class="filter-section">
+        <div class="form-group">
+          <label for="dateRange">时间范围</label>
+          <select id="dateRange" class="form-control">
+            <option value="today">今天</option>
+            <option value="thisWeek">本周</option>
+            <option value="thisMonth" selected>本月</option>
+            <option value="lastMonth">上月</option>
+            <option value="custom">自定义</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="paymentStatus">支付状态</label>
+          <select id="paymentStatus" class="form-control">
+            <option value="all" selected>全部</option>
+            <option value="success">成功</option>
+            <option value="failed">失败</option>
+            <option value="processing">处理中</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="searchPayment">搜索</label>
+          <input type="text" id="searchPayment" placeholder="搜索订单号/商品" class="form-control" onkeyup="filterTable('searchPayment', 'paymentHistoryTable')">
+        </div>
+      </div>
+      
+      <table id="paymentHistoryTable">
+        <thead>
+          <tr>
+            <th>订单编号</th>
+            <th>支付时间</th>
+            <th>支付方式</th>
+            <th>支付金额</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ORDER-20230610-001</td>
+            <td>2023-06-10 15:32:18</td>
+            <td>钱包余额</td>
+            <td>¥3,300.00</td>
+            <td><span class="badge badge-success">成功</span></td>
+            <td><button onclick="showPaymentDetail('ORDER-20230610-001')">查看详情</button></td>
+          </tr>
+          <tr>
+            <td>ORDER-20230609-005</td>
+            <td>2023-06-09 14:22:45</td>
+            <td>支付宝</td>
+            <td>¥1,500.00</td>
+            <td><span class="badge badge-success">成功</span></td>
+            <td><button onclick="showPaymentDetail('ORDER-20230609-005')">查看详情</button></td>
+          </tr>
+          <tr>
+            <td>ORDER-20230608-012</td>
+            <td>2023-06-08 09:15:33</td>
+            <td>PayPal</td>
+            <td>¥2,800.00</td>
+            <td><span class="badge badge-danger">失败</span></td>
+            <td><button onclick="showPaymentDetail('ORDER-20230608-012')">查看详情</button></td>
+          </tr>
+          <tr>
+            <td>ORDER-20230607-008</td>
+            <td>2023-06-07 16:42:51</td>
+            <td>微信支付</td>
+            <td>¥950.00</td>
+            <td><span class="badge badge-success">成功</span></td>
+            <td><button onclick="showPaymentDetail('ORDER-20230607-008')">查看详情</button></td>
+          </tr>
+          <tr>
+            <td>ORDER-20230606-015</td>
+            <td>2023-06-06 11:20:17</td>
+            <td>银行转账</td>
+            <td>¥5,000.00</td>
+            <td><span class="badge badge-warning">处理中</span></td>
+            <td><button onclick="showPaymentDetail('ORDER-20230606-015')">查看详情</button></td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="pagination">
+        <button>&lt;&lt;</button>
+        <button>&lt;</button>
+        <button disabled>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>&gt;</button>
+        <button>&gt;&gt;</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+  <script>
+    // Check URL parameters for order status demonstration
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const status = urlParams.get('status');
+      
+      if (status === 'failed') {
+        document.getElementById('paymentResultSection').style.display = 'none';
+        document.getElementById('paymentFailedSection').style.display = 'block';
+        document.getElementById('paymentProcessingSection').style.display = 'none';
+      } else if (status === 'processing') {
+        document.getElementById('paymentResultSection').style.display = 'none';
+        document.getElementById('paymentFailedSection').style.display = 'none';
+        document.getElementById('paymentProcessingSection').style.display = 'block';
+      } else {
+        // Default to success
+        document.getElementById('paymentResultSection').style.display = 'block';
+        document.getElementById('paymentFailedSection').style.display = 'none';
+        document.getElementById('paymentProcessingSection').style.display = 'none';
+      }
+    }
+    
+    function showPaymentDetail(orderId) {
+      // In a real application, this would fetch the order details from the server
+      // For now, we'll just alert the order ID
+      alert('查看订单详情: ' + orderId);
+    }
+  </script>
+</body>
+</html> 

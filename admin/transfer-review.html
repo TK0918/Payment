@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>支付系统改造 PRD 文档</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <div class="nav">
+    <ul>
+      <li><a href="./index.html">客户列表</a></li>
+      <li><a href="./transfer-review.html">转账审核</a></li>
+      <li><a href="./report-export.html">报表导出</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h1>转账审核</h1>
+    </div>
+
+    <div class="card">
+      <div class="tabs">
+        <div class="tab active" onclick="openTab(event, 'pendingReviews')">待审核</div>
+        <div class="tab" onclick="openTab(event, 'approvedReviews')">已通过</div>
+        <div class="tab" onclick="openTab(event, 'rejectedReviews')">已驳回</div>
+      </div>
+      
+      <div id="pendingReviews" class="tab-content active">
+        <div class="filter-section">
+          <div class="form-group">
+            <label for="pendingSearch">搜索</label>
+            <input type="text" id="pendingSearch" placeholder="搜索审核单号/客户名称" class="form-control" onkeyup="filterTable('pendingSearch', 'pendingReviewTable')">
+          </div>
+          
+          <div class="form-group">
+            <label for="pendingDateRange">提交时间</label>
+            <select id="pendingDateRange" class="form-control">
+              <option value="today">今天</option>
+              <option value="yesterday">昨天</option>
+              <option value="thisWeek" selected>本周</option>
+              <option value="lastWeek">上周</option>
+              <option value="custom">自定义</option>
+            </select>
+          </div>
+        </div>
+        
+        <table id="pendingReviewTable">
+          <thead>
+            <tr>
+              <th>审核单号</th>
+              <th>客户名称</th>
+              <th>提交时间</th>
+              <th>转账金额</th>
+              <th>支付方式</th>
+              <th>凭证</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>TR20230610001</td>
+              <td>ABC科技有限公司</td>
+              <td>2023-06-10 09:15:22</td>
+              <td>¥20,000.00</td>
+              <td>银行转账</td>
+              <td><img src="https://i.imgur.com/HlAcbZF.jpg" alt="转账凭证" class="thumbnail" id="receipt1" onclick="showImagePreview('receipt1')"></td>
+              <td>
+                <button onclick="openModal('reviewModal1')" class="success-btn">审核</button>
+              </td>
+            </tr>
+            <tr>
+              <td>TR20230609005</td>
+              <td>XYZ贸易公司</td>
+              <td>2023-06-09 16:42:15</td>
+              <td>¥15,000.00</td>
+              <td>PayPal</td>
+              <td><img src="https://i.imgur.com/rO8xamp.jpg" alt="转账凭证" class="thumbnail" id="receipt2" onclick="showImagePreview('receipt2')"></td>
+              <td>
+                <button onclick="openModal('reviewModal2')" class="success-btn">审核</button>
+              </td>
+            </tr>
+            <tr>
+              <td>TR20230609003</td>
+              <td>全球电子商务</td>
+              <td>2023-06-09 11:05:38</td>
+              <td>¥30,000.00</td>
+              <td>银行转账</td>
+              <td><img src="https://i.imgur.com/wP6SZIR.jpg" alt="转账凭证" class="thumbnail" id="receipt3" onclick="showImagePreview('receipt3')"></td>
+              <td>
+                <button onclick="openModal('reviewModal3')" class="success-btn">审核</button>
+              </td>
+            </tr>
+            <tr>
+              <td>TR20230608012</td>
+              <td>卓越教育机构</td>
+              <td>2023-06-08 14:30:55</td>
+              <td>¥8,000.00</td>
+              <td>支付宝</td>
+              <td><img src="https://i.imgur.com/PJOCk5A.jpg" alt="转账凭证" class="thumbnail" id="receipt4" onclick="showImagePreview('receipt4')"></td>
+              <td>
+                <button onclick="openModal('reviewModal4')" class="success-btn">审核</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="pagination">
+          <button>&lt;&lt;</button>
+          <button>&lt;</button>
+          <button disabled>1</button>
+          <button>2</button>
+          <button>&gt;</button>
+          <button>&gt;&gt;</button>
+        </div>
+      </div>
+      
+      <div id="approvedReviews" class="tab-content">
+        <div class="filter-section">
+          <div class="form-group">
+            <label for="approvedSearch">搜索</label>
+            <input type="text" id="approvedSearch" placeholder="搜索审核单号/客户名称" class="form-control" onkeyup="filterTable('approvedSearch', 'approvedReviewTable')">
+          </div>
+          
+          <div class="form-group">
+            <label for="approvedDateRange">审核时间</label>
+            <select id="approvedDateRange" class="form-control">
+              <option value="today">今天</option>
+              <option value="yesterday">昨天</option>
+              <option value="thisWeek" selected>本周</option>
+              <option value="lastWeek">上周</option>
+              <option value="custom">自定义</option>
+            </select>
+          </div>
+        </div>
+        
+        <table id="approvedReviewTable">
+          <thead>
+            <tr>
+              <th>审核单号</th>
+              <th>客户名称</th>
+              <th>提交时间</th>
+              <th>审核时间</th>
+              <th>转账金额</th>
+              <th>支付方式</th>
+              <th>审核人</th>
+              <th>凭证</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>TR20230607009</td>
+              <td>快速物流服务</td>
+              <td>2023-06-07 10:25:18</td>
+              <td>2023-06-07 11:15:42</td>
+              <td>¥12,000.00</td>
+              <td>银行转账</td>
+              <td>管理员001</td>
+              <td><img src="https://i.imgur.com/HlAcbZF.jpg" alt="转账凭证" class="thumbnail" id="receipt5" onclick="showImagePreview('receipt5')"></td>
+            </tr>
+            <tr>
+              <td>TR20230606015</td>
+              <td>ABC科技有限公司</td>
+              <td>2023-06-06 14:18:33</td>
+              <td>2023-06-06 15:05:22</td>
+              <td>¥25,000.00</td>
+              <td>支付宝</td>
+              <td>管理员002</td>
+              <td><img src="https://i.imgur.com/PJOCk5A.jpg" alt="转账凭证" class="thumbnail" id="receipt6" onclick="showImagePreview('receipt6')"></td>
+            </tr>
+            <tr>
+              <td>TR20230605007</td>
+              <td>卓越教育机构</td>
+              <td>2023-06-05 09:45:10</td>
+              <td>2023-06-05 10:30:05</td>
+              <td>¥18,000.00</td>
+              <td>银行转账</td>
+              <td>管理员001</td>
+              <td><img src="https://i.imgur.com/wP6SZIR.jpg" alt="转账凭证" class="thumbnail" id="receipt7" onclick="showImagePreview('receipt7')"></td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="pagination">
+          <button>&lt;&lt;</button>
+          <button>&lt;</button>
+          <button disabled>1</button>
+          <button>2</button>
+          <button>&gt;</button>
+          <button>&gt;&gt;</button>
+        </div>
+      </div>
+      
+      <div id="rejectedReviews" class="tab-content">
+        <div class="filter-section">
+          <div class="form-group">
+            <label for="rejectedSearch">搜索</label>
+            <input type="text" id="rejectedSearch" placeholder="搜索审核单号/客户名称" class="form-control" onkeyup="filterTable('rejectedSearch', 'rejectedReviewTable')">
+          </div>
+          
+          <div class="form-group">
+            <label for="rejectedDateRange">审核时间</label>
+            <select id="rejectedDateRange" class="form-control">
+              <option value="today">今天</option>
+              <option value="yesterday">昨天</option>
+              <option value="thisWeek" selected>本周</option>
+              <option value="lastWeek">上周</option>
+              <option value="custom">自定义</option>
+            </select>
+          </div>
+        </div>
+        
+        <table id="rejectedReviewTable">
+          <thead>
+            <tr>
+              <th>审核单号</th>
+              <th>客户名称</th>
+              <th>提交时间</th>
+              <th>审核时间</th>
+              <th>转账金额</th>
+              <th>支付方式</th>
+              <th>审核人</th>
+              <th>驳回原因</th>
+              <th>凭证</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>TR20230608010</td>
+              <td>创新营销策划</td>
+              <td>2023-06-08 11:10:25</td>
+              <td>2023-06-08 13:20:18</td>
+              <td>¥10,000.00</td>
+              <td>银行转账</td>
+              <td>管理员002</td>
+              <td>凭证与转账信息不符</td>
+              <td><img src="https://i.imgur.com/HlAcbZF.jpg" alt="转账凭证" class="thumbnail" id="receipt8" onclick="showImagePreview('receipt8')"></td>
+            </tr>
+            <tr>
+              <td>TR20230607005</td>
+              <td>全球电子商务</td>
+              <td>2023-06-07 09:05:42</td>
+              <td>2023-06-07 10:15:33</td>
+              <td>¥15,000.00</td>
+              <td>支付宝</td>
+              <td>管理员001</td>
+              <td>凭证图片不清晰，请重新提交</td>
+              <td><img src="https://i.imgur.com/PJOCk5A.jpg" alt="转账凭证" class="thumbnail" id="receipt9" onclick="showImagePreview('receipt9')"></td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="pagination">
+          <button>&lt;&lt;</button>
+          <button>&lt;</button>
+          <button disabled>1</button>
+          <button>2</button>
+          <button>&gt;</button>
+          <button>&gt;&gt;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Modal 1 -->
+  <div id="reviewModal1" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('reviewModal1')">&times;</span>
+      <h2>审核转账申请</h2>
+      
+      <div class="detail-row">
+        <div class="detail-label">审核单号</div>
+        <div class="detail-value">TR20230610001</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">客户名称</div>
+        <div class="detail-value">ABC科技有限公司</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">客户ID</div>
+        <div class="detail-value">C001</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">提交时间</div>
+        <div class="detail-value">2023-06-10 09:15:22</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">转账金额</div>
+        <div class="detail-value">¥20,000.00</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">支付方式</div>
+        <div class="detail-value">银行转账</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">银行信息</div>
+        <div class="detail-value">中国工商银行 6222 **** **** 1234</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">转账说明</div>
+        <div class="detail-value">账户充值</div>
+      </div>
+      
+      <div style="margin: 20px 0;">
+        <h3>转账凭证</h3>
+        <img src="https://i.imgur.com/HlAcbZF.jpg" alt="转账凭证" style="max-width: 100%; max-height: 300px;">
+      </div>
+      
+      <form id="reviewForm1">
+        <div class="form-group">
+          <label for="reviewComment1">审核意见</label>
+          <textarea id="reviewComment1" class="form-control" rows="3"></textarea>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: center;">
+          <button type="button" onclick="approveTransfer('TR20230610001')" class="success-btn">通过</button>
+          <button type="button" onclick="rejectTransfer('TR20230610001')" class="danger-btn">驳回</button>
+          <button type="button" onclick="closeModal('reviewModal1')">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- 其他审核模态框结构类似，此处省略 -->
+
+  <!-- Image Preview Modal -->
+  <div id="imageModal" class="image-modal">
+    <span class="image-modal-close">&times;</span>
+    <img class="image-modal-content" id="fullImage">
+  </div>
+
+  <script src="./js/script.js"></script>
+  <script>
+    function approveTransfer(transferId) {
+      const comment = document.getElementById('reviewComment1').value;
+      
+      if (!comment) {
+        alert('请输入审核意见');
+        return;
+      }
+      
+      if (confirm('确定要通过此转账申请吗？')) {
+        alert('转账申请已通过：' + transferId);
+        closeModal('reviewModal1');
+        // In a real application, this would submit the form data and refresh the list
+      }
+    }
+    
+    function rejectTransfer(transferId) {
+      const comment = document.getElementById('reviewComment1').value;
+      
+      if (!comment) {
+        alert('请输入驳回原因');
+        return;
+      }
+      
+      if (confirm('确定要驳回此转账申请吗？')) {
+        alert('转账申请已驳回：' + transferId);
+        closeModal('reviewModal1');
+        // In a real application, this would submit the form data and refresh the list
+      }
+    }
+  </script>
+</body>
+</html> 

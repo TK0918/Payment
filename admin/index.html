@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>支付系统改造 PRD 文档</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <div class="nav">
+    <ul>
+      <li><a href="./index.html">客户列表</a></li>
+      <li><a href="./transfer-review.html">转账审核</a></li>
+      <li><a href="./report-export.html">报表导出</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h1>客户列表</h1>
+    </div>
+
+    <div class="card">
+      <div class="filter-section">
+        <div class="form-group">
+          <label for="clientSearch">搜索客户</label>
+          <input type="text" id="clientSearch" placeholder="输入客户名称或ID" class="form-control" onkeyup="filterTable('clientSearch', 'clientListTable')">
+        </div>
+        
+        <div class="form-group">
+          <label for="clientStatus">客户状态</label>
+          <select id="clientStatus" class="form-control">
+            <option value="all" selected>全部</option>
+            <option value="active">正常</option>
+            <option value="frozen">冻结</option>
+            <option value="closed">注销</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="balanceFilter">余额筛选</label>
+          <select id="balanceFilter" class="form-control">
+            <option value="all" selected>全部</option>
+            <option value="positive">余额大于0</option>
+            <option value="zero">余额为0</option>
+            <option value="negative">余额小于0</option>
+            <option value="custom">自定义范围</option>
+          </select>
+        </div>
+        
+        <button onclick="filterClientList()">筛选</button>
+        <button onclick="resetFilter()">重置筛选</button>
+      </div>
+      
+      <table id="clientListTable">
+        <thead>
+          <tr>
+            <th>客户ID</th>
+            <th>客户名称</th>
+            <th>总充值金额</th>
+            <th>总消费金额</th>
+            <th>当前钱包余额</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-id="C001">
+            <td>C001</td>
+            <td>ABC科技有限公司</td>
+            <td>¥150,000.00</td>
+            <td>¥120,500.00</td>
+            <td>¥29,500.00</td>
+            <td><span class="badge badge-success">正常</span></td>
+            <td>
+              <button onclick="window.location.href='./client-detail-C001.html'">查看详情</button>
+            </td>
+          </tr>
+          <tr data-id="C002">
+            <td>C002</td>
+            <td>XYZ贸易公司</td>
+            <td>¥85,000.00</td>
+            <td>¥79,800.00</td>
+            <td>¥5,200.00</td>
+            <td><span class="badge badge-success">正常</span></td>
+            <td>
+              <button onclick="window.location.href='./client-detail-C002.html'">查看详情</button>
+            </td>
+          </tr>
+          <tr data-id="C003">
+            <td>C003</td>
+            <td>未来信息技术</td>
+            <td>¥220,000.00</td>
+            <td>¥198,400.00</td>
+            <td>¥21,600.00</td>
+            <td><span class="badge badge-danger">冻结</span></td>
+            <td>
+              <button onclick="window.location.href='./client-detail-C003.html'">查看详情</button>
+            </td>
+          </tr>
+          <tr data-id="C004">
+            <td>C004</td>
+            <td>全球电子商务</td>
+            <td>¥320,000.00</td>
+            <td>¥315,000.00</td>
+            <td>¥5,000.00</td>
+            <td><span class="badge badge-success">正常</span></td>
+            <td>
+              <button onclick="window.location.href='./client-detail-C004.html'">查看详情</button>
+            </td>
+          </tr>
+          <tr data-id="C005">
+            <td>C005</td>
+            <td>智慧软件开发</td>
+            <td>¥75,000.00</td>
+            <td>¥75,000.00</td>
+            <td>¥0.00</td>
+            <td><span class="badge badge-warning">注销</span></td>
+            <td>
+              <button onclick="window.location.href='./client-detail-C005.html'">查看详情</button>
+            </td>
+          </tr>
+          <tr data-id="C006">
+            <td>C006</td>
+            <td>卓越教育机构</td>
+            <td>¥180,000.00</td>
+            <td>¥165,800.00</td>
+            <td>¥14,200.00</td>
+            <td><span class="badge badge-success">正常</span></td>
+            <td>
+              <button onclick="window.location.href='./client-detail-C006.html'">查看详情</button>
+            </td>
+          </tr>
+          <tr data-id="C007">
+            <td>C007</td>
+            <td>快速物流服务</td>
+            <td>¥95,000.00</td>
+            <td>¥92,500.00</td>
+            <td>¥2,500.00</td>
+            <td><span class="badge badge-success">正常</span></td>
+            <td>
+              <button onclick="window.location.href='./client-detail-C007.html'">查看详情</button>
+            </td>
+          </tr>
+          <tr data-id="C008">
+            <td>C008</td>
+            <td>创新营销策划</td>
+            <td>¥110,000.00</td>
+            <td>¥115,500.00</td>
+            <td class="error">-¥5,500.00</td>
+            <td><span class="badge badge-danger">冻结</span></td>
+            <td>
+              <button onclick="window.location.href='./client-detail-C008.html'">查看详情</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="pagination">
+        <button>&lt;&lt;</button>
+        <button>&lt;</button>
+        <button disabled>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>&gt;</button>
+        <button>&gt;&gt;</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+  <script>
+    function filterClientList() {
+      // In a real application, this would apply all filters
+      alert('应用筛选条件');
+    }
+    
+    function resetFilter() {
+      document.getElementById('clientSearch').value = '';
+      document.getElementById('clientStatus').value = 'all';
+      document.getElementById('balanceFilter').value = 'all';
+      
+      // Reset table filtering
+      filterTable('clientSearch', 'clientListTable');
+      
+      alert('筛选条件已重置');
+    }
+    
+    // Make table rows clickable
+    document.addEventListener('DOMContentLoaded', function() {
+      makeTableRowsClickable('clientListTable', './client-detail-');
+    });
+  </script>
+</body>
+</html> 

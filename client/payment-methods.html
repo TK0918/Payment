@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>支付系统改造 PRD 文档</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <div class="nav">
+    <ul>
+      <li><a href="./index.html">我的钱包</a></li>
+      <li><a href="./payment-methods.html">支付方式设置</a></li>
+      <li><a href="./create-order.html">创建支付订单</a></li>
+      <li><a href="./payment-details.html">支付结果与明细</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h1>支付方式设置</h1>
+      <div>
+        <button onclick="openModal('addPaymentMethodModal')">绑定新账户</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>支付优先级排序</h2>
+      <p>拖拽支付方式可调整优先级顺序，排在前面的优先使用</p>
+      
+      <ul class="sortable-list" id="paymentMethodsList">
+        <li class="sortable-item" draggable="true">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <strong>钱包余额</strong>
+              <div>账户余额: ¥10,000.00</div>
+            </div>
+            <div>当前: 优先级 1</div>
+          </div>
+        </li>
+        <li class="sortable-item" draggable="true">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <strong>PayPal</strong>
+              <div>账户: user@example.com</div>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <div style="margin-right: 20px;">当前: 优先级 2</div>
+              <button onclick="openModal('editPayPalModal')">编辑</button>
+              <button onclick="if(confirm('确定要解绑此支付方式吗？')) alert('解绑成功')">解绑</button>
+            </div>
+          </div>
+        </li>
+        <li class="sortable-item" draggable="true">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <strong>支付宝</strong>
+              <div>账户: 138****6789</div>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <div style="margin-right: 20px;">当前: 优先级 3</div>
+              <button onclick="openModal('editAlipayModal')">编辑</button>
+              <button onclick="if(confirm('确定要解绑此支付方式吗？')) alert('解绑成功')">解绑</button>
+            </div>
+          </div>
+        </li>
+        <li class="sortable-item" draggable="true">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <strong>微信支付</strong>
+              <div>账户: 微信用户</div>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <div style="margin-right: 20px;">当前: 优先级 4</div>
+              <button onclick="openModal('editWechatModal')">编辑</button>
+              <button onclick="if(confirm('确定要解绑此支付方式吗？')) alert('解绑成功')">解绑</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+      
+      <button id="saveOrderBtn" style="margin-top: 20px;" onclick="alert('优先级设置已保存')">保存优先级顺序</button>
+    </div>
+    
+    <div class="card">
+      <h2>已绑定支付账户</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>支付方式</th>
+            <th>绑定账户</th>
+            <th>绑定时间</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PayPal</td>
+            <td>user@example.com</td>
+            <td>2023-01-15</td>
+            <td><span class="badge badge-success">已授权</span></td>
+            <td>
+              <button onclick="openModal('editPayPalModal')">编辑</button>
+              <button onclick="if(confirm('确定要解绑此支付方式吗？')) alert('解绑成功')">解绑</button>
+            </td>
+          </tr>
+          <tr>
+            <td>支付宝</td>
+            <td>138****6789</td>
+            <td>2023-02-20</td>
+            <td><span class="badge badge-success">已授权</span></td>
+            <td>
+              <button onclick="openModal('editAlipayModal')">编辑</button>
+              <button onclick="if(confirm('确定要解绑此支付方式吗？')) alert('解绑成功')">解绑</button>
+            </td>
+          </tr>
+          <tr>
+            <td>微信支付</td>
+            <td>微信用户</td>
+            <td>2023-03-10</td>
+            <td><span class="badge badge-success">已授权</span></td>
+            <td>
+              <button onclick="openModal('editWechatModal')">编辑</button>
+              <button onclick="if(confirm('确定要解绑此支付方式吗？')) alert('解绑成功')">解绑</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Add Payment Method Modal -->
+  <div id="addPaymentMethodModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('addPaymentMethodModal')">&times;</span>
+      <h2>绑定新支付方式</h2>
+      <div class="form-group">
+        <label for="paymentType">选择支付方式</label>
+        <select id="paymentType" class="form-control">
+          <option value="paypal">PayPal</option>
+          <option value="alipay">支付宝</option>
+          <option value="wechat">微信支付</option>
+          <option value="stripe">Stripe</option>
+          <option value="apple">Apple Pay</option>
+        </select>
+      </div>
+      <p>点击下方按钮将跳转到对应支付平台授权页面</p>
+      <button onclick="alert('即将跳转到第三方授权页面'); closeModal('addPaymentMethodModal')">前往授权绑定</button>
+      <button onclick="closeModal('addPaymentMethodModal')">取消</button>
+    </div>
+  </div>
+
+  <!-- Edit PayPal Modal -->
+  <div id="editPayPalModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('editPayPalModal')">&times;</span>
+      <h2>编辑 PayPal 账户</h2>
+      <div class="form-group">
+        <label>当前绑定账户</label>
+        <div>user@example.com</div>
+      </div>
+      <p>如需修改绑定账户，请先解绑当前账户，然后重新绑定新账户。</p>
+      <button onclick="if(confirm('确定要解绑此支付方式吗？')) {alert('解绑成功'); closeModal('editPayPalModal');}">解绑账户</button>
+      <button onclick="alert('即将刷新授权'); closeModal('editPayPalModal')">重新授权</button>
+      <button onclick="closeModal('editPayPalModal')">取消</button>
+    </div>
+  </div>
+
+  <!-- Edit Alipay Modal -->
+  <div id="editAlipayModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('editAlipayModal')">&times;</span>
+      <h2>编辑支付宝账户</h2>
+      <div class="form-group">
+        <label>当前绑定账户</label>
+        <div>138****6789</div>
+      </div>
+      <p>如需修改绑定账户，请先解绑当前账户，然后重新绑定新账户。</p>
+      <button onclick="if(confirm('确定要解绑此支付方式吗？')) {alert('解绑成功'); closeModal('editAlipayModal');}">解绑账户</button>
+      <button onclick="alert('即将刷新授权'); closeModal('editAlipayModal')">重新授权</button>
+      <button onclick="closeModal('editAlipayModal')">取消</button>
+    </div>
+  </div>
+
+  <!-- Edit Wechat Modal -->
+  <div id="editWechatModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('editWechatModal')">&times;</span>
+      <h2>编辑微信支付账户</h2>
+      <div class="form-group">
+        <label>当前绑定账户</label>
+        <div>微信用户</div>
+      </div>
+      <p>如需修改绑定账户，请先解绑当前账户，然后重新绑定新账户。</p>
+      <button onclick="if(confirm('确定要解绑此支付方式吗？')) {alert('解绑成功'); closeModal('editWechatModal');}">解绑账户</button>
+      <button onclick="alert('即将刷新授权'); closeModal('editWechatModal')">重新授权</button>
+      <button onclick="closeModal('editWechatModal')">取消</button>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+</body>
+</html> 
